@@ -1,4 +1,4 @@
-import { circuitJson as arduinoUnoCircuitJson } from "./assets/arduino-uno.kicad_pcb"
+import { circuitJson as arduinoUnoCircuitJson } from "./assets/arduino-uno.source.kicad_pcb"
 
 const REROUTE_REGION = {
   minX: -10,
