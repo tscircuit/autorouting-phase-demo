@@ -10,6 +10,7 @@
     "electronics"
   ],
   "scripts": {
+    "postinstall": "bun scripts/patch-tsci-static-loader.js",
     "dev": "tsci dev",
     "build": "tsci build",
     "snapshot": "tsci snapshot",
@@ -19,8 +20,14 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
-    "tscircuit": "^0.0.1731",
+    "tscircuit": "^0.0.1732",
     "typescript": "^5.0.0"
   },
-  "author": "seveibar"
+  "author": "seveibar",
+  "dependencies": {
+    "@tscircuit/capacity-autorouter": "^0.0.506",
+    "@tscircuit/core": "^0.0.1230",
+    "@tscircuit/eval": "^0.0.827",
+    "@tscircuit/props": "^0.0.525"
+  }
 }
