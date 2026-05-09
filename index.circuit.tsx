@@ -1,4 +1,5 @@
-import { circuitJson as arduinoUnoCircuitJson } from "./assets/arduino-uno.source.kicad_pcb"
+import { Fragment } from "react"
+import { boardContentCircuitJson as arduinoUnoCircuitJson } from "./assets/arduino-uno.kicad_pcb"
 
 const REROUTE_REGION = {
   minX: -10,
@@ -117,6 +118,36 @@ const straightThroughAutorouter = createBasicAutorouter(routeStraightThroughRegi
 const createRerouteRegionAutorouter = (region: typeof REROUTE_REGION) =>
   createBasicAutorouter(routeAroundRegion(region))
 
+const arduinoUnoPcbTraces = arduinoUnoCircuitJson.filter(
+  (element: any) => element.type === "pcb_trace",
+)
+
+const ImportedArduinoCopper = () => (
+  <>
+    {arduinoUnoPcbTraces.map((trace: any) => {
+      const wireRoute = trace.route.filter(
+        (point: any) => point.route_type === "wire",
+      )
+      const layer = wireRoute[0]?.layer ?? "top"
+
+      return (
+        <Fragment key={trace.pcb_trace_id}>
+        <pcbtrace
+          layer={layer}
+          route={wireRoute.map((point: any) => ({
+            route_type: "wire",
+            x: point.x,
+            y: point.y,
+            width: point.width,
+            layer: point.layer,
+          }))}
+        />
+        </Fragment>
+      )
+    })}
+  </>
+)
+
 const DemoTracePair = ({ routingPhaseIndex }: { routingPhaseIndex: number }) => (
   <>
     <testpoint
@@ -154,6 +185,7 @@ const ArduinoRerouteDemoBoard = ({
 }) => (
   <board name={name} width="72mm" height="58mm" routingDisabled={false}>
     <subcircuit name="ArduinoUnoImport" circuitJson={arduinoUnoCircuitJson} />
+    <ImportedArduinoCopper />
 
     <silkscreentext
       text={includeReroutePhase ? "Arduino UNO + region reroute" : "Arduino UNO, no reroute"}
